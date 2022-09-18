@@ -10,7 +10,7 @@ public final class ParseFile {
         this.file = file;
     }
 
-    private String content(Predicate<Character> filter) throws IOException {
+    private synchronized String content(Predicate<Character> filter) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             StringBuilder content = new StringBuilder();
             int data;
