@@ -10,7 +10,7 @@ public final class ParseFile {
         this.file = file;
     }
 
-    public String content(Predicate<Character> filter) throws IOException {
+    private String content(Predicate<Character> filter) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             StringBuilder content = new StringBuilder();
             int data;
@@ -19,7 +19,16 @@ public final class ParseFile {
                     content.append((char) data);
                 }
             }
+
             return content.toString();
         }
+    }
+
+    public String getContent() throws IOException {
+        return content(character -> true);
+    }
+
+    public String getContentWithoutUnicode() throws IOException {
+        return content(character -> character < 0x80);
     }
 }
