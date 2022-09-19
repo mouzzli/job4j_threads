@@ -17,17 +17,28 @@ class SimpleBlockingQueueTest {
         List<Integer> actual = new ArrayList<>();
         Thread producer = new Thread(
                 () -> {
-                    for (Integer integer : expected) {
-                        simpleBlockingQueue.offer(integer);
+                    try {
+                        for (Integer integer : expected) {
+                            simpleBlockingQueue.offer(integer);
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        Thread.currentThread().interrupt();
                     }
+
                 }
         );
         Thread consumer = new Thread(
                 () -> {
-                    actual.add((Integer) simpleBlockingQueue.poll());
-                    actual.add((Integer) simpleBlockingQueue.poll());
-                    actual.add((Integer) simpleBlockingQueue.poll());
-                    actual.add((Integer) simpleBlockingQueue.poll());
+                    try {
+                        actual.add((Integer) simpleBlockingQueue.poll());
+                        actual.add((Integer) simpleBlockingQueue.poll());
+                        actual.add((Integer) simpleBlockingQueue.poll());
+                        actual.add((Integer) simpleBlockingQueue.poll());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        Thread.currentThread().interrupt();
+                    }
                 }
         );
         producer.start();
