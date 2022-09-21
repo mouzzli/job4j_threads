@@ -16,7 +16,7 @@ public class Cache {
             if (model.getVersion() != base.getVersion()) {
                 throw new OptimisticException("Versions are not equal");
             }
-            Base updatedBase = new Base(model.getId(), model.getVersion() + 1, model.getName());
+            Base updatedBase = Base.of(model.getId(), model.getVersion() + 1, model.getName());
             updatedBase.setName(model.getName());
             return updatedBase;
         }) != null;
@@ -27,10 +27,6 @@ public class Cache {
     }
 
     public Optional<Base> get(int id) {
-        Optional<Base> base = Optional.ofNullable(memory.get(id));
-        if (base.isPresent()) {
-            return Optional.of(Base.of(memory.get(id)));
-        }
-        return base;
+        return Optional.ofNullable(memory.get(id));
     }
 }
