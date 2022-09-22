@@ -22,6 +22,7 @@ public class ThreadPool {
                 }
             }));
         }
+        threads.forEach(Thread::start);
     }
 
     public void work(Runnable job) throws InterruptedException {
@@ -32,13 +33,8 @@ public class ThreadPool {
         threads.forEach(Thread::interrupt);
     }
 
-    public void start() {
-        threads.forEach(Thread::start);
-    }
-
     public static void main(String[] args) {
         ThreadPool threadPool = new ThreadPool();
-        threadPool.start();
         for (int i = 0; i < 20; i++) {
             try {
                 int finalI = i;
