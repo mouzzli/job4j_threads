@@ -15,7 +15,7 @@ public class ThreadPool {
             threads.add(new Thread(() -> {
                 while (!Thread.currentThread().isInterrupted()) {
                     try {
-                        tasks.poll();
+                        tasks.poll().run();
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
@@ -34,5 +34,24 @@ public class ThreadPool {
 
     public void start() {
         threads.forEach(Thread::start);
+    }
+
+    public static void main(String[] args) {
+        ThreadPool threadPool = new ThreadPool();
+        threadPool.start();
+        for (int i = 0; i < 20; i++) {
+            try {
+                int finalI = i;
+                threadPool.work(() -> System.out.println(Thread.currentThread().getName() + " " + finalI));
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        threadPool.shutdown();
     }
 }
