@@ -37,7 +37,6 @@ public class ParallelIndexSearch<T>  extends RecursiveTask<Integer> {
         leftSort.fork();
         rightSort.fork();
         return Math.max(leftSort.join(), rightSort.join());
-
     }
 
     private int find(T[] array, T value) {
