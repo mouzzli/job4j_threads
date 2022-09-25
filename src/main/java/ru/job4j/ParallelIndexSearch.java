@@ -28,7 +28,7 @@ public class ParallelIndexSearch<T> extends RecursiveTask<Integer> {
     @Override
     protected Integer compute() {
         if (from - to <= ARRAY_SIZE) {
-            return find(array, value, from, to);
+            return find();
         }
         int mid = (from - to) / 2;
         ParallelIndexSearch<T> leftSort = new ParallelIndexSearch<>(array, value, from, mid);
@@ -38,7 +38,7 @@ public class ParallelIndexSearch<T> extends RecursiveTask<Integer> {
         return Math.max(leftSort.join(), rightSort.join());
     }
 
-    private int find(T[] array, T value, int from, int to) {
+    private int find() {
         for (int i = from; i <= to; i++) {
             if (array[i].equals(value)) {
                 return i;
